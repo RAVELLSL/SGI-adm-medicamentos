@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="mobile-web-app-capable" content="yes">
   <title>Administração de Medicamentos - Visual Futurista Suave</title>
+  <!-- Pré-conexão para melhorar o carregamento das fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Importando fontes: Orbitron para títulos e Poppins para textos -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -55,11 +59,19 @@
       background-size: 400% 400%;
       animation: gradientAnim 20s ease infinite;
       z-index: -2;
+      /* Gatilho para aceleração de GPU */
+      transform: translateZ(0);
     }
     @keyframes gradientAnim {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
+    }
+    /* Reduzir animação para usuários que preferem menos movimento */
+    @media (prefers-reduced-motion: reduce) {
+      body::before {
+        animation: none;
+      }
     }
     /* Overlay sutil para efeito tecnológico */
     body::after {
@@ -99,6 +111,9 @@
     /* ================================
        TABELA FUTURISTA SUAVE
     ================================= */
+    .table-container {
+      overflow-x: auto;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -214,6 +229,8 @@
       }
       input, button {
         width: 100%;
+        padding: 10px;
+        font-size: 16px;
       }
     }
   </style>
@@ -222,27 +239,30 @@
   <div class="container">
     <h1>Administração de Medicamentos</h1>
     <h2>Cadastro/Lista de Medicamentos</h2>
-    <table id="medTable">
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Dosagem</th>
-          <th>Horário</th>
-          <th>Estoque<br>(Unidades)</th>
-          <th>Ação</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Linha de cadastro (nova entrada) -->
-        <tr id="newEntry">
-          <td><input type="text" id="newName" placeholder="Nome do Medicamento"></td>
-          <td><input type="text" id="newDosage" placeholder="Dosagem"></td>
-          <td><input type="time" id="newTime"></td>
-          <td><input type="text" id="newQuantity" placeholder="Quantidade"></td>
-          <td><button class="btn-add" onclick="addMedicineFromTable()">Adicionar</button></td>
-        </tr>
-      </tbody>
-    </table>
+    
+    <div class="table-container">
+      <table id="medTable">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Dosagem</th>
+            <th>Horário</th>
+            <th>Estoque<br>(Unidades)</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Linha de cadastro (nova entrada) -->
+          <tr id="newEntry">
+            <td><input type="text" id="newName" placeholder="Nome do Medicamento"></td>
+            <td><input type="text" id="newDosage" placeholder="Dosagem"></td>
+            <td><input type="time" id="newTime"></td>
+            <td><input type="text" id="newQuantity" placeholder="Quantidade"></td>
+            <td><button class="btn-add" onclick="addMedicineFromTable()">Adicionar</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <button class="btn-pharmacy" onclick="togglePharmacyList()">Farmácias</button>
     <div class="pharmacy-list" id="pharmacyList">
