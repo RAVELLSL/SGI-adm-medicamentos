@@ -15,7 +15,7 @@
        VARIÁVEIS & RESET
     ================================= */
     :root {
-      --bg-main: #f5f7fa;
+      --bg-main: #e0f7fa; /* Cor base do fundo */
       --glass-bg: rgba(255, 255, 255, 0.85);
       --accent-color: #7fdbff;
       --secondary-accent: #ff80ab;
@@ -35,7 +35,9 @@
       box-sizing: border-box;
     }
     /* ================================
-       FUNDO ANIMADO FUTURISTA SUAVE
+       FUNDO MELHORADO
+       - Fundo base com radial-gradient e animação suave de pulso
+       - Overlay sutil com padrão de pontos para um toque futurista
     ================================= */
     body {
       font-family: 'Poppins', sans-serif;
@@ -51,23 +53,19 @@
     body::before {
       content: "";
       position: fixed;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, #f5f7fa, #e0efff, #f5f7fa, #e0efff);
-      background-size: 400% 400%;
-      animation: gradientAnim 20s ease infinite;
+      top: -10%;
+      left: -10%;
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle at center, #ffffff, var(--bg-main) 70%);
+      background-size: 150% 150%;
+      animation: pulseBg 25s ease-in-out infinite;
       z-index: -2;
-      transform: translateZ(0);
     }
-    @keyframes gradientAnim {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      body::before { animation: none; }
+    @keyframes pulseBg {
+      0%   { transform: scale(1);   opacity: 1; }
+      50%  { transform: scale(1.05);  opacity: 0.97; }
+      100% { transform: scale(1);   opacity: 1; }
     }
     body::after {
       content: "";
@@ -77,10 +75,12 @@
       width: 100%;
       height: 100%;
       background-image: 
-        linear-gradient(0deg, transparent 24%, rgba(127, 219, 255, 0.03) 25%, rgba(127, 219, 255, 0.03) 26%, transparent 27%, transparent 74%, rgba(127, 219, 255, 0.03) 75%, rgba(127, 219, 255, 0.03) 76%, transparent 77%, transparent),
-        linear-gradient(90deg, transparent 24%, rgba(127, 219, 255, 0.03) 25%, rgba(127, 219, 255, 0.03) 26%, transparent 27%, transparent 74%, rgba(127, 219, 255, 0.03) 75%, rgba(127, 219, 255, 0.03) 76%, transparent 77%, transparent);
+        radial-gradient(circle, rgba(127, 219, 255, 0.05) 1px, transparent 1px),
+        radial-gradient(circle, rgba(127, 219, 255, 0.05) 1px, transparent 1px);
+      background-position: 0 0, 25px 25px;
       background-size: 50px 50px;
       z-index: -1;
+      opacity: 0.5;
     }
     /* ================================
        CONTAINER GLASSMORPHISM
@@ -246,7 +246,7 @@
         padding: 10px;
         font-size: 16px;
       }
-      /* Esconde o formulário dentro da tabela no desktop */
+      /* Esconde o formulário na tabela para dispositivos móveis */
       #newEntry {
         display: none;
       }
@@ -308,12 +308,10 @@
   <script>
     let medicines = [];
 
-    // Atualiza o localStorage
     function updateLocalStorage() {
       localStorage.setItem("medicines", JSON.stringify(medicines));
     }
 
-    // Renderiza a tabela mantendo a linha de cadastro para desktop
     function renderMedicines() {
       const tbody = document.getElementById("medTable").querySelector("tbody");
       const newEntryRow = `
@@ -342,7 +340,6 @@
       });
     }
 
-    // Função comum para adicionar um medicamento
     function addMedicine(name, dosage, time, quantity) {
       let newMedicine = { name, dosage, time, quantity };
       medicines.push(newMedicine);
@@ -350,13 +347,11 @@
       renderMedicines();
     }
 
-    // Função para adicionar medicamento via formulário desktop (na tabela)
     function addMedicineFromTable() {
       let name = document.getElementById('newName').value;
       let dosage = document.getElementById('newDosage').value;
       let time = document.getElementById('newTime').value;
       let quantity = document.getElementById('newQuantity').value;
-
       if (name === "" || dosage === "" || time === "" || quantity === "") {
         alert("Por favor, preencha todos os campos.");
         return;
@@ -364,33 +359,28 @@
       addMedicine(name, dosage, time, quantity);
     }
 
-    // Função para adicionar medicamento via formulário móvel (fora da tabela)
     function addMedicineFromMobileForm() {
       let name = document.getElementById('mobileNewName').value;
       let dosage = document.getElementById('mobileNewDosage').value;
       let time = document.getElementById('mobileNewTime').value;
       let quantity = document.getElementById('mobileNewQuantity').value;
-
       if (name === "" || dosage === "" || time === "" || quantity === "") {
         alert("Por favor, preencha todos os campos.");
         return;
       }
       addMedicine(name, dosage, time, quantity);
-      // Limpa os campos do formulário móvel
       document.getElementById('mobileNewName').value = "";
       document.getElementById('mobileNewDosage').value = "";
       document.getElementById('mobileNewTime').value = "";
       document.getElementById('mobileNewQuantity').value = "";
     }
 
-    // Remove um medicamento
     function removeMedicine(index) {
       medicines.splice(index, 1);
       updateLocalStorage();
       renderMedicines();
     }
 
-    // Permite edição inline do medicamento
     function editMedicine(button) {
       let row = button.parentNode.parentNode;
       let index = row.getAttribute("data-index");
@@ -419,13 +409,11 @@
       }
     }
 
-    // Alterna a exibição da lista de farmácias
     function togglePharmacyList() {
       let list = document.getElementById("pharmacyList");
       list.classList.toggle("open");
     }
 
-    // Ao carregar a página, renderiza os dados salvos
     document.addEventListener('DOMContentLoaded', () => {
       const storedMedicines = localStorage.getItem("medicines");
       if (storedMedicines) {
