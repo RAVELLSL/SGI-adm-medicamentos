@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administração de Medicamentos - Visual Futurista Suave</title>
+  <!-- Importando fontes: Orbitron para títulos e Poppins para textos -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ================================
+       VARIÁVEIS & RESET
+    ================================= */
+    :root {
+      --bg-main: #f5f7fa;               /* Fundo claro e suave */
+      --glass-bg: rgba(255, 255, 255, 0.85); /* Fundo translúcido branco */
+      --accent-color: #7fdbff;          /* Pastel Turquoise */
+      --secondary-accent: #ff80ab;      /* Pastel Pink */
+      --text-color: #333333;            /* Texto escuro */
+      --input-border: #cccccc;
+      --input-focus: #7fdbff;
+      --btn-bg: #7fdbff;
+      --btn-hover: #6ac7e0;
+      --btn-danger: #ff6b6b;
+      --btn-danger-hover: #ff4c4c;
+      --table-head-bg: #7fdbff;
+      --table-head-text: #333333;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    /* ================================
+       FUNDO ANIMADO FUTURISTA SUAVE
+    ================================= */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-main);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, #f5f7fa, #e0efff, #f5f7fa, #e0efff);
+      background-size: 400% 400%;
+      animation: gradientAnim 20s ease infinite;
+      z-index: -2;
+    }
+    @keyframes gradientAnim {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    /* Overlay sutil para efeito tecnológico */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(0deg, transparent 24%, rgba(127, 219, 255, 0.03) 25%, rgba(127, 219, 255, 0.03) 26%, transparent 27%, transparent 74%, rgba(127, 219, 255, 0.03) 75%, rgba(127, 219, 255, 0.03) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, rgba(127, 219, 255, 0.03) 25%, rgba(127, 219, 255, 0.03) 26%, transparent 27%, transparent 74%, rgba(127, 219, 255, 0.03) 75%, rgba(127, 219, 255, 0.03) 76%, transparent 77%, transparent);
+      background-size: 50px 50px;
+      z-index: -1;
+    }
+    /* ================================
+       CONTAINER GLASSMORPHISM
+    ================================= */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      background: var(--glass-bg);
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      margin: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      color: var(--accent-color);
+      text-shadow: 0 0 8px var(--accent-color);
+      margin-bottom: 20px;
+    }
+    /* ================================
+       TABELA FUTURISTA SUAVE
+    ================================= */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid rgba(204,204,204,0.5);
+    }
+    th {
+      background-color: var(--table-head-bg);
+      color: var(--table-head-text);
+      font-family: 'Orbitron', sans-serif;
+    }
+    /* ================================
+       INPUTS & BOTÕES
+    ================================= */
+    input {
+      width: 90%;
+      padding: 5px;
+      border: 1px solid var(--input-border);
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.8);
+      color: var(--text-color);
+      transition: border-color 0.3s;
+    }
+    input:focus {
+      border-color: var(--input-focus);
+      outline: none;
+    }
+    button {
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    .btn-add {
+      background-color: var(--btn-bg);
+      color: var(--bg-main);
+    }
+    .btn-add:hover {
+      background-color: var(--btn-hover);
+    }
+    .btn-edit {
+      background-color: #83f050;
+      color: #fff;
+      margin-right: 5px;
+    }
+    .btn-edit:hover {
+      background-color: #83f050;
+    }
+    .btn-remove {
+      background-color: var(--btn-danger);
+      color: #fff;
+    }
+    .btn-remove:hover {
+      background-color: var(--btn-danger-hover);
+    }
+    .btn-pharmacy {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px;
+      width: auto;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+    .btn-pharmacy:hover {
+      background-color: #0069d9;
+    }
+    /* ================================
+       LISTA DE FARMÁCIAS
+    ================================= */
+    .pharmacy-list {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      background: var(--glass-bg);
+      padding: 0 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      margin-top: 20px;
+    }
+    .pharmacy-list.open {
+      max-height: 200px;
+      padding: 10px;
+    }
+    .pharmacy-list a {
+      display: block;
+      padding: 8px;
+      text-decoration: none;
+      color: #007bff;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(204,204,204,0.5);
+      transition: background-color 0.3s;
+    }
+    .pharmacy-list a:last-child {
+      border-bottom: none;
+    }
+    .pharmacy-list a:hover {
+      background: rgba(0,123,255,0.1);
+      text-decoration: underline;
+    }
+    /* ================================
+       RESPONSIVIDADE
+    ================================= */
+    @media (max-width: 768px) {
+      .container {
+        margin: 10px;
+        padding: 15px;
+      }
+      input, button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Administração de Medicamentos</h1>
+    <h2>Cadastro/Lista de Medicamentos</h2>
+    <table id="medTable">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Dosagem</th>
+          <th>Horário</th>
+          <th>Estoque<br>(Unidades)</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Linha de cadastro (nova entrada) -->
+        <tr id="newEntry">
+          <td><input type="text" id="newName" placeholder="Nome do Medicamento"></td>
+          <td><input type="text" id="newDosage" placeholder="Dosagem"></td>
+          <td><input type="time" id="newTime"></td>
+          <td><input type="text" id="newQuantity" placeholder="Quantidade"></td>
+          <td><button class="btn-add" onclick="addMedicineFromTable()">Adicionar</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button class="btn-pharmacy" onclick="togglePharmacyList()">Farmácias</button>
+    <div class="pharmacy-list" id="pharmacyList">
+      <a href="https://www.drogasil.com.br/" target="_blank">Drogasil</a>
+      <a href="https://www.drogaraia.com.br/" target="_blank">Droga Raia</a>
+      <a href="https://www.paguemenos.com.br/" target="_blank">Pague Menos</a>
+      <a href="https://www.drogariasaopaulo.com.br/" target="_blank">Drogaria São Paulo</a>
+      <a href="https://www.drogariaspacheco.com.br/" target="_blank">Drogarias Pacheco</a>
+      <a href="https://www.drogariabongi.com.br/" target="_blank">Drogaria Bongi</a>
+    </div>
+  </div>
+
+  <script>
+    // Array para armazenar os medicamentos
+    let medicines = [];
+
+    // Atualiza os dados no localStorage
+    function updateLocalStorage() {
+      localStorage.setItem("medicines", JSON.stringify(medicines));
+    }
+
+    // Renderiza a tabela: mantém a linha de cadastro e insere os dados armazenados
+    function renderMedicines() {
+      const tbody = document.getElementById("medTable").querySelector("tbody");
+      // Linha de cadastro (newEntry)
+      const newEntryRow = `
+        <tr id="newEntry">
+          <td><input type="text" id="newName" placeholder="Nome do Medicamento"></td>
+          <td><input type="text" id="newDosage" placeholder="Dosagem"></td>
+          <td><input type="time" id="newTime"></td>
+          <td><input type="text" id="newQuantity" placeholder="Quantidade"></td>
+          <td><button class="btn-add" onclick="addMedicineFromTable()">Adicionar</button></td>
+        </tr>
+      `;
+      tbody.innerHTML = newEntryRow;
+      // Insere os medicamentos armazenados
+      medicines.forEach((med, index) => {
+        let newRow = tbody.insertRow();
+        newRow.setAttribute("data-index", index);
+        newRow.innerHTML = `
+          <td>${med.name}</td>
+          <td>${med.dosage}</td>
+          <td>${med.time}</td>
+          <td>${med.quantity}</td>
+          <td>
+            <button class="btn-edit" onclick="editMedicine(this)">Editar</button>
+            <button class="btn-remove" onclick="removeMedicine(${index})">Remover</button>
+          </td>
+        `;
+      });
+    }
+
+    // Adiciona um novo medicamento a partir dos dados da linha de cadastro
+    function addMedicineFromTable() {
+      let name = document.getElementById('newName').value;
+      let dosage = document.getElementById('newDosage').value;
+      let time = document.getElementById('newTime').value;
+      let quantity = document.getElementById('newQuantity').value;
+
+      if (name === "" || dosage === "" || time === "" || quantity === "") {
+        alert("Por favor, preencha todos os campos.");
+        return;
+      }
+
+      let newMedicine = { name, dosage, time, quantity };
+      medicines.push(newMedicine);
+      updateLocalStorage();
+      renderMedicines();
+    }
+
+    // Remove o medicamento do array e atualiza a tabela
+    function removeMedicine(index) {
+      medicines.splice(index, 1);
+      updateLocalStorage();
+      renderMedicines();
+    }
+
+    // Permite edição inline do medicamento
+    function editMedicine(button) {
+      let row = button.parentNode.parentNode;
+      let index = row.getAttribute("data-index");
+      if (button.textContent === "Editar") {
+        // Transforma as células em inputs
+        for (let i = 0; i < 4; i++) {
+          let cell = row.cells[i];
+          let value = cell.textContent;
+          let inputType = (i === 2) ? "time" : "text";
+          cell.innerHTML = `<input type="${inputType}" value="${value}" style="width:90%; padding:5px;">`;
+        }
+        button.textContent = "Salvar";
+      } else {
+        let newValues = [];
+        for (let i = 0; i < 4; i++) {
+          let input = row.cells[i].querySelector("input");
+          newValues.push(input.value);
+        }
+        medicines[index] = {
+          name: newValues[0],
+          dosage: newValues[1],
+          time: newValues[2],
+          quantity: newValues[3]
+        };
+        updateLocalStorage();
+        renderMedicines();
+      }
+    }
+
+    // Alterna a exibição da lista de farmácias
+    function togglePharmacyList() {
+      let list = document.getElementById("pharmacyList");
+      list.classList.toggle("open");
+    }
+
+    // Ao carregar a página, carrega os dados do localStorage (se houver) e renderiza a tabela
+    document.addEventListener('DOMContentLoaded', () => {
+      const storedMedicines = localStorage.getItem("medicines");
+      if (storedMedicines) {
+        medicines = JSON.parse(storedMedicines);
+      }
+      renderMedicines();
+    });
+  </script>
+</body>
+</html>
