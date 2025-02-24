@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="mobile-web-app-capable" content="yes">
   <title>Administração de Medicamentos - Visual Futurista Suave</title>
-  <!-- Pré-conexão para melhorar o carregamento das fontes -->
+  <!-- Pré-conexão para carregamento rápido das fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Importando fontes: Orbitron para títulos e Poppins para textos -->
@@ -15,11 +15,11 @@
        VARIÁVEIS & RESET
     ================================= */
     :root {
-      --bg-main: #f5f7fa;               /* Fundo claro e suave */
-      --glass-bg: rgba(255, 255, 255, 0.85); /* Fundo translúcido branco */
-      --accent-color: #7fdbff;          /* Pastel Turquoise */
-      --secondary-accent: #ff80ab;      /* Pastel Pink */
-      --text-color: #333333;            /* Texto escuro */
+      --bg-main: #f5f7fa;
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --accent-color: #7fdbff;
+      --secondary-accent: #ff80ab;
+      --text-color: #333333;
       --input-border: #cccccc;
       --input-focus: #7fdbff;
       --btn-bg: #7fdbff;
@@ -59,7 +59,6 @@
       background-size: 400% 400%;
       animation: gradientAnim 20s ease infinite;
       z-index: -2;
-      /* Gatilho para aceleração de GPU */
       transform: translateZ(0);
     }
     @keyframes gradientAnim {
@@ -67,13 +66,9 @@
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-    /* Reduzir animação para usuários que preferem menos movimento */
     @media (prefers-reduced-motion: reduce) {
-      body::before {
-        animation: none;
-      }
+      body::before { animation: none; }
     }
-    /* Overlay sutil para efeito tecnológico */
     body::after {
       content: "";
       position: fixed;
@@ -220,6 +215,25 @@
       text-decoration: underline;
     }
     /* ================================
+       FORMULÁRIO PARA DISPOSITIVOS MÓVEIS
+    ================================= */
+    .mobile-form {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .mobile-form input {
+      width: 90%;
+      margin: 5px 0;
+      padding: 8px;
+      font-size: 16px;
+    }
+    .mobile-form button {
+      padding: 10px 15px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    /* ================================
        RESPONSIVIDADE
     ================================= */
     @media (max-width: 768px) {
@@ -232,6 +246,13 @@
         padding: 10px;
         font-size: 16px;
       }
+      /* Esconde o formulário dentro da tabela no desktop */
+      #newEntry {
+        display: none;
+      }
+      .mobile-form {
+        display: block;
+      }
     }
   </style>
 </head>
@@ -239,6 +260,15 @@
   <div class="container">
     <h1>Administração de Medicamentos</h1>
     <h2>Cadastro/Lista de Medicamentos</h2>
+    
+    <!-- Formulário de cadastro para dispositivos móveis -->
+    <div class="mobile-form">
+      <input type="text" id="mobileNewName" placeholder="Nome do Medicamento">
+      <input type="text" id="mobileNewDosage" placeholder="Dosagem">
+      <input type="time" id="mobileNewTime">
+      <input type="text" id="mobileNewQuantity" placeholder="Quantidade">
+      <button class="btn-add" onclick="addMedicineFromMobileForm()">Adicionar</button>
+    </div>
     
     <div class="table-container">
       <table id="medTable">
@@ -252,7 +282,7 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Linha de cadastro (nova entrada) -->
+          <!-- Linha de cadastro para desktop -->
           <tr id="newEntry">
             <td><input type="text" id="newName" placeholder="Nome do Medicamento"></td>
             <td><input type="text" id="newDosage" placeholder="Dosagem"></td>
@@ -276,18 +306,16 @@
   </div>
 
   <script>
-    // Array para armazenar os medicamentos
     let medicines = [];
 
-    // Atualiza os dados no localStorage
+    // Atualiza o localStorage
     function updateLocalStorage() {
       localStorage.setItem("medicines", JSON.stringify(medicines));
     }
 
-    // Renderiza a tabela: mantém a linha de cadastro e insere os dados armazenados
+    // Renderiza a tabela mantendo a linha de cadastro para desktop
     function renderMedicines() {
       const tbody = document.getElementById("medTable").querySelector("tbody");
-      // Linha de cadastro (newEntry)
       const newEntryRow = `
         <tr id="newEntry">
           <td><input type="text" id="newName" placeholder="Nome do Medicamento"></td>
@@ -298,7 +326,6 @@
         </tr>
       `;
       tbody.innerHTML = newEntryRow;
-      // Insere os medicamentos armazenados
       medicines.forEach((med, index) => {
         let newRow = tbody.insertRow();
         newRow.setAttribute("data-index", index);
@@ -315,7 +342,15 @@
       });
     }
 
-    // Adiciona um novo medicamento a partir dos dados da linha de cadastro
+    // Função comum para adicionar um medicamento
+    function addMedicine(name, dosage, time, quantity) {
+      let newMedicine = { name, dosage, time, quantity };
+      medicines.push(newMedicine);
+      updateLocalStorage();
+      renderMedicines();
+    }
+
+    // Função para adicionar medicamento via formulário desktop (na tabela)
     function addMedicineFromTable() {
       let name = document.getElementById('newName').value;
       let dosage = document.getElementById('newDosage').value;
@@ -326,14 +361,29 @@
         alert("Por favor, preencha todos os campos.");
         return;
       }
-
-      let newMedicine = { name, dosage, time, quantity };
-      medicines.push(newMedicine);
-      updateLocalStorage();
-      renderMedicines();
+      addMedicine(name, dosage, time, quantity);
     }
 
-    // Remove o medicamento do array e atualiza a tabela
+    // Função para adicionar medicamento via formulário móvel (fora da tabela)
+    function addMedicineFromMobileForm() {
+      let name = document.getElementById('mobileNewName').value;
+      let dosage = document.getElementById('mobileNewDosage').value;
+      let time = document.getElementById('mobileNewTime').value;
+      let quantity = document.getElementById('mobileNewQuantity').value;
+
+      if (name === "" || dosage === "" || time === "" || quantity === "") {
+        alert("Por favor, preencha todos os campos.");
+        return;
+      }
+      addMedicine(name, dosage, time, quantity);
+      // Limpa os campos do formulário móvel
+      document.getElementById('mobileNewName').value = "";
+      document.getElementById('mobileNewDosage').value = "";
+      document.getElementById('mobileNewTime').value = "";
+      document.getElementById('mobileNewQuantity').value = "";
+    }
+
+    // Remove um medicamento
     function removeMedicine(index) {
       medicines.splice(index, 1);
       updateLocalStorage();
@@ -345,7 +395,6 @@
       let row = button.parentNode.parentNode;
       let index = row.getAttribute("data-index");
       if (button.textContent === "Editar") {
-        // Transforma as células em inputs
         for (let i = 0; i < 4; i++) {
           let cell = row.cells[i];
           let value = cell.textContent;
@@ -376,7 +425,7 @@
       list.classList.toggle("open");
     }
 
-    // Ao carregar a página, carrega os dados do localStorage (se houver) e renderiza a tabela
+    // Ao carregar a página, renderiza os dados salvos
     document.addEventListener('DOMContentLoaded', () => {
       const storedMedicines = localStorage.getItem("medicines");
       if (storedMedicines) {
