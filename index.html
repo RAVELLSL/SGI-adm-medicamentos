@@ -15,19 +15,19 @@
        VARIÁVEIS & RESET
     ================================= */
     :root {
-      --bg-main: #e0f7fa; /* Cor base do fundo */
-      --glass-bg: rgba(255, 255, 255, 0.85);
-      --accent-color: #7fdbff;
-      --secondary-accent: #ff80ab;
-      --text-color: #333333;
-      --input-border: #cccccc;
-      --input-focus: #7fdbff;
-      --btn-bg: #7fdbff;
-      --btn-hover: #6ac7e0;
-      --btn-danger: #ff6b6b;
-      --btn-danger-hover: #ff4c4c;
-      --table-head-bg: #7fdbff;
-      --table-head-text: #333333;
+      --bg-main: #f5f9fc;              /* Fundo principal: leve e neutro */
+      --glass-bg: rgba(255, 255, 255, 0.92); /* Fundo do container com efeito glass */
+      --accent-color: #81d4fa;         /* Azul pastel suave para destaques */
+      --secondary-accent: #a5d6a7;     /* Verde pastel para acentos secundários */
+      --text-color: #333333;           /* Texto escuro para boa legibilidade */
+      --input-border: #b0bec5;         /* Bordas em tom suave */
+      --input-focus: #81d4fa;          /* Foco com a cor de destaque */
+      --btn-bg: #81d4fa;               /* Botões primários */
+      --btn-hover: #4fc3f7;            /* Hover: azul um pouco mais intenso */
+      --btn-danger: #ef5350;           /* Botões de ação crítica */
+      --btn-danger-hover: #e53935;
+      --table-head-bg: #81d4fa;        /* Cabeçalho da tabela */
+      --table-head-text: #ffffff;
     }
     * {
       margin: 0;
@@ -36,8 +36,7 @@
     }
     /* ================================
        FUNDO MELHORADO
-       - Fundo base com radial-gradient e animação suave de pulso
-       - Overlay sutil com padrão de pontos para um toque futurista
+       - Fundo base com radial-gradient animado e overlay sutil
     ================================= */
     body {
       font-family: 'Poppins', sans-serif;
@@ -75,8 +74,8 @@
       width: 100%;
       height: 100%;
       background-image: 
-        radial-gradient(circle, rgba(127, 219, 255, 0.05) 1px, transparent 1px),
-        radial-gradient(circle, rgba(127, 219, 255, 0.05) 1px, transparent 1px);
+        radial-gradient(circle, rgba(129, 212, 250, 0.05) 1px, transparent 1px),
+        radial-gradient(circle, rgba(129, 212, 250, 0.05) 1px, transparent 1px);
       background-position: 0 0, 25px 25px;
       background-size: 50px 50px;
       z-index: -1;
